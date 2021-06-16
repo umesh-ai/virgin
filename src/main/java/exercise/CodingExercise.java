@@ -13,13 +13,18 @@ public class CodingExercise {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
+		if(args.length == 0) {
+			System.out.println("Enter Category");
+			System.exit(0);
+		}
+		
 		List<Transaction> transactionData = 
 				TransactionDataPopulator.CreateTransactionData().orElse(Collections.<Transaction>emptyList());
 		
 		TransactionEvaluator transactionEvaluator = new TransactionEvaluator();
 		transactionEvaluator.setTransactions(transactionData);
 		
-		String category = "MyMonthlyDD";
+		String category = args[0];
 		
 		
 		List<Transaction> givenCategorySorted = transactionEvaluator.getTransactionByCategorySorted(category);

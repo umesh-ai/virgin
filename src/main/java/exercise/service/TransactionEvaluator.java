@@ -18,6 +18,9 @@ public class TransactionEvaluator {
 	private List<Transaction> transactions;
 	private Logger logger = LoggerFactory.getLogger(TransactionEvaluator.class);
 	
+	private static final String COMPUTE_TYPE_MAX= "max";
+	private static final String COMPUTE_TYPE_MIN= "min";
+	
 	
 	public List<Transaction> getTransactionByCategorySorted(String category) {
 		List<Transaction> transactions = getTransactions();
@@ -89,6 +92,11 @@ public class TransactionEvaluator {
 			return Collections.emptyMap();
 		}
 		
+		return computeTransactionData(category, transactions, COMPUTE_TYPE_MAX);
+		
+	}
+
+	private Map<String, Object> computeTransactionData(String category, List<Transaction> transactions, String computeType) {
 		return transactions.stream()
 	        .filter(t -> null != t.getCategory() && t.getCategory().equalsIgnoreCase(category))
 	        .collect(Collectors.groupingBy(Transaction::getTransactionYear))
@@ -99,10 +107,17 @@ public class TransactionEvaluator {
 		    		targetSet.addAll(x.getValue());
 		    		return  targetSet.stream().map(Transaction::getTransactionYear).collect(Collectors.joining(","));},
 		    	x -> {
-		        return x.getValue().stream().mapToDouble(Transaction::getAmt).max();
+			    		switch(computeType) {
+				    		case COMPUTE_TYPE_MAX :
+				    			return x.getValue().stream().mapToDouble(Transaction::getAmt).max();
+				    		case COMPUTE_TYPE_MIN :
+				    			return x.getValue().stream().mapToDouble(Transaction::getAmt).min();
+				    		default :
+				    		 return 0.0;
+				    		 	
+			    		}
 		    		}
 		    	));
-		
 	}
 	
 	public Map<String, Object> getLowestSpendByCategoryForYear(String category) {
@@ -113,19 +128,7 @@ public class TransactionEvaluator {
 			return Collections.emptyMap();
 		}
 		
-		return transactions.stream()
-	        .filter(t -> null != t.getCategory() && t.getCategory().equalsIgnoreCase(category))
-	        .collect(Collectors.groupingBy(Transaction::getTransactionYear))
-		    .entrySet().stream()
-		    .collect(Collectors.toMap(
-		    	x -> {
-		    		Set<Transaction> targetSet = new TreeSet<>(Comparator.comparing(Transaction::getTransactionYear));
-		    		targetSet.addAll(x.getValue());
-		    		return  targetSet.stream().map(Transaction::getTransactionYear).collect(Collectors.joining(","));},
-		    	x -> {
-		        return x.getValue().stream().mapToDouble(Transaction::getAmt).min();
-		    		}
-		    	));
+		return computeTransactionData(category, transactions, COMPUTE_TYPE_MIN);
 		
 	}
 	
