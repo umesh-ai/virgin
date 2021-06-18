@@ -13,14 +13,10 @@ import org.slf4j.LoggerFactory;
 
 import exercise.model.Transaction;
 
-public class TransactionEvaluator {
+public class TransactionEvaluator implements ITransactionEvaluator{
 
 	private List<Transaction> transactions;
 	private Logger logger = LoggerFactory.getLogger(TransactionEvaluator.class);
-	
-	private static final String COMPUTE_TYPE_MAX= "max";
-	private static final String COMPUTE_TYPE_MIN= "min";
-	
 	
 	public List<Transaction> getTransactionByCategorySorted(String category) {
 		List<Transaction> transactions = getTransactions();
@@ -96,30 +92,6 @@ public class TransactionEvaluator {
 		
 	}
 
-	private Map<String, Object> computeTransactionData(String category, List<Transaction> transactions, String computeType) {
-		return transactions.stream()
-	        .filter(t -> null != t.getCategory() && t.getCategory().equalsIgnoreCase(category))
-	        .collect(Collectors.groupingBy(Transaction::getTransactionYear))
-		    .entrySet().stream()
-		    .collect(Collectors.toMap(
-		    	x -> {
-		    		Set<Transaction> targetSet = new TreeSet<>(Comparator.comparing(Transaction::getTransactionYear));
-		    		targetSet.addAll(x.getValue());
-		    		return  targetSet.stream().map(Transaction::getTransactionYear).collect(Collectors.joining(","));},
-		    	x -> {
-			    		switch(computeType) {
-				    		case COMPUTE_TYPE_MAX :
-				    			return x.getValue().stream().mapToDouble(Transaction::getAmt).max();
-				    		case COMPUTE_TYPE_MIN :
-				    			return x.getValue().stream().mapToDouble(Transaction::getAmt).min();
-				    		default :
-				    		 return 0.0;
-				    		 	
-			    		}
-		    		}
-		    	));
-	}
-	
 	public Map<String, Object> getLowestSpendByCategoryForYear(String category) {
 		List<Transaction> transactions = getTransactions();
 		
