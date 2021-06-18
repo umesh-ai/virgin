@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import exercise.model.Transaction;
 
-public class TransactionEvaluator implements ITransactionEvaluator{
+public class TransactionEvaluator {
 
 	public static final String COMPUTE_TYPE_MAX= "max";
 	public static final String COMPUTE_TYPE_MIN= "min";
