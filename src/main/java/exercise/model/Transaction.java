@@ -2,6 +2,9 @@ package exercise.model;
 
 import java.time.LocalDate;
 
+import lombok.Builder;
+
+@Builder
 public class Transaction {
 
 		private LocalDate transactionDate;
@@ -9,16 +12,8 @@ public class Transaction {
 		private String transactionType;
 		private double amt;
 		private String category;
+
 		
-		
-		public Transaction() {
-			
-		}
-		
-		public Transaction(String category, double amt) {
-			this.category = category;
-			this.amt = amt;
-		}
 		
 		
 		public LocalDate getTransactionDate() {

@@ -38,12 +38,12 @@ public class TransactionDataPopulator {
 	private static Transaction populateTransaction(double amt,
 			String type, String vendor, String category, LocalDate tDate) throws ParseException {
 		
-		Transaction tran1 = new Transaction();
-		tran1.setAmt(amt);
-		tran1.setTransactionType(type);
-		tran1.setVendor(vendor);
-		tran1.setCategory(category);
-		tran1.setTransactionDate(tDate);
+		Transaction tran1 = Transaction.builder()
+				.amt(amt)
+				.category(category)
+				.transactionDate(tDate)
+				.transactionType(type)
+				.vendor(vendor).build();
 		
 		return tran1;
 	}
