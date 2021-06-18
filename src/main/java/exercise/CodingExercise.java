@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import exercise.model.Transaction;
+import exercise.service.ITransactionEvaluator;
 import exercise.service.TransactionEvaluator;
 import exercise.util.TransactionDataPopulator;
 
@@ -21,27 +22,25 @@ public class CodingExercise {
 		List<Transaction> transactionData = 
 				TransactionDataPopulator.CreateTransactionData().orElse(Collections.<Transaction>emptyList());
 		
-		TransactionEvaluator transactionEvaluator = new TransactionEvaluator();
-		transactionEvaluator.setTransactions(transactionData);
-		
+		ITransactionEvaluator transactionEvaluator = new TransactionEvaluator();
 		String category = args[0];
 		
 		
-		List<Transaction> givenCategorySorted = transactionEvaluator.getTransactionByCategorySorted(category);
+		List<Transaction> givenCategorySorted = transactionEvaluator.getTransactionByCategorySorted(category,transactionData);
 		System.out.println(givenCategorySorted);
 		
-		Map<String,Object> totalPerCategory = transactionEvaluator.getTransactionTotalByCategory();
+		Map<String,Object> totalPerCategory = transactionEvaluator.getTransactionTotalByCategory(transactionData);
 		System.out.println(totalPerCategory);
 		
 		
-		Map<String,Object> monthlyAvgCategory = transactionEvaluator.getMonthlySpendByCategory(category);
+		Map<String,Object> monthlyAvgCategory = transactionEvaluator.getMonthlySpendByCategory(category,transactionData);
 		System.out.println(monthlyAvgCategory);
 		
 		
-		Map<String,Object> highestCategoryYear = transactionEvaluator.getHighestSpendByCategoryForYear(category);
+		Map<String,Object> highestCategoryYear = transactionEvaluator.getHighestSpendByCategoryForYear(category,transactionData);
 		System.out.println(highestCategoryYear);
 		
-		Map<String,Object> lowestCategoryYear = transactionEvaluator.getLowestSpendByCategoryForYear(category);
+		Map<String,Object> lowestCategoryYear = transactionEvaluator.getLowestSpendByCategoryForYear(category,transactionData);
 		System.out.println(lowestCategoryYear);
 		
 		
