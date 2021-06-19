@@ -7,10 +7,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import exercise.model.Transaction;
+import exercise.model.Transaction_wl;
 
 public class TransactionDataPopulator {
 
+	private static Logger logger = LoggerFactory.getLogger(TransactionDataPopulator.class);
+	
+	
 	public static Optional<List<Transaction>> CreateTransactionData() {
 		
 		List<Transaction> transactions = new ArrayList<Transaction>(5);
@@ -44,6 +51,12 @@ public class TransactionDataPopulator {
 				.transactionDate(tDate)
 				.transactionType(type)
 				.vendor(vendor).build();
+		
+		//without lombok support
+		Transaction_wl twl = Transaction_wl.builder()
+				.setAmt(amt)
+				.setCategory(category).build();
+		logger.info(twl.toString());
 		
 		return tran1;
 	}

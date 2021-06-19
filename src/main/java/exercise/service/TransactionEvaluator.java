@@ -14,7 +14,6 @@ import exercise.model.Transaction;
 
 public class TransactionEvaluator implements ITransactionEvaluator{
 
-	private List<Transaction> transactions;
 	private Logger logger = LoggerFactory.getLogger(TransactionEvaluator.class);
 	
 	public List<Transaction> getTransactionByCategorySorted(String category, List<Transaction> transactions) {
@@ -62,15 +61,5 @@ public class TransactionEvaluator implements ITransactionEvaluator{
 	public Map<String, Object> getLowestSpendByCategoryForYear(String category, List<Transaction> transactions) {
 		return computeTransactionData(category, transactions, COMPUTE_TYPE_MIN);
 	}
-	
-	public List<Transaction> getTransactions() {
-		return transactions;
-	}
 
-
-	public void setTransactions(List<Transaction> transactions) {
-		this.transactions = transactions;
-	}
-	
-	
 }
